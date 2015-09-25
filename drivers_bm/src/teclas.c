@@ -117,10 +117,16 @@ int LeerTecla(int tecla){
 
 int EscanearTeclado(void){
 	//Recorre el teclado una vez leyendo si está pulsada alguna tecla.
-	int tecla;
-	int tecla_presionada;
-	int potencia_2;
+	int tecla =1;
+	int tecla_presionada=0;
 
+	while (tecla <= 4){
+		if (LeerTecla(tecla)) {
+			tecla_presionada= tecla;}
+		tecla=tecla +1;
+
+	}
+	return tecla_presionada;
 
 };
 

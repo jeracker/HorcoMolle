@@ -104,7 +104,7 @@ void RIT_IRQHandler(void);
 
 
 void InicializarADC(void); //Inicializa el conversor DAC
-int LeerCanalADC(int canal);
+uint16_t LeerCanalADC(int canal);
 
 /*==================[external functions declaration]=========================*/
 

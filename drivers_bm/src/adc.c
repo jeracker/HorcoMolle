@@ -107,7 +107,7 @@ void InicializarADC(void)
 };
 
 
-int LeerCanalADC(int canal){
+uint16_t LeerCanalADC(int canal){
 	uint16_t* datos;
 	Chip_ADC_SetStartMode(LPC_ADC0, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
 	while(Chip_ADC_ReadStatus(LPC_ADC0,ADC_CH1,ADC_DR_DONE_STAT)!=SET);

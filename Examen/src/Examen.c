@@ -79,6 +79,12 @@
 /*==================[internal data definition]===============================*/
 static int Coeficiente = 100;
 static int Incremento = 10;
+static unsigned char strAumento[]="1 - Aumento la ganancia\r\n";
+static unsigned char strDisminucion[]="2 - Disminuyo la ganancia\r\n";
+static unsigned char strMute[]="3 - Mute\r\n";
+static unsigned char strSatura[]="4 - Satura\r\n";
+static unsigned char strBlanco[]="\r\n";
+
 
 /*==================[external data definition]===============================*/
 
@@ -106,9 +112,21 @@ int main(void)
 	InicializarTimer();
 	InicializarDAC();
 	InicializarADC();
+	UART_Init();
 
 	for (led=0;led<=5;led++){
 		ApagarLed(led);};
+	/******		Menu	 ****/
+	EnviaAConsola(strBlanco);
+	EnviaAConsola(strBlanco);
+	EnviaAConsola(strBlanco);
+	EnviaAConsola(strAumento);
+	EnviaAConsola(strDisminucion);
+	EnviaAConsola(strMute);
+	EnviaAConsola(strSatura);
+	EnviaAConsola(strBlanco);
+	EnviaAConsola(strBlanco);
+	EnviaAConsola(strBlanco);
 
 	/*for (led=0;led<=5;led++){
 	ParpadearLed(led,2,1000000);};*/
@@ -132,11 +150,17 @@ void ServicioIRQ_RIT(void){
 	switch (tecla){
 	case 0: break;
 	case 1: Coeficiente = Coeficiente + Incremento;
+			EnviaAConsola(strAumento);
 			break;
 	case 2: Coeficiente = Coeficiente - Incremento;
+			EnviaAConsola(strDisminucion);
 			break;
-	case 3: Coeficiente=0;break;
-	case 4: break;
+	case 3: Coeficiente=0;
+			EnviaAConsola(strMute);
+			break;
+	case 4: Coeficiente= CalculaCoeficienteSaturacion(datos);
+			EnviaAConsola(strSatura);
+			break;
 	default: break;}
 
 	datos = ModificaDatos(datos, Coeficiente);
@@ -149,6 +173,23 @@ int ModificaDatos(int datos, int coeficiente){
 	resultado = datos * coeficiente / 100;
 	if (resultado>1023){resultado = 1023;};
 	return resultado;
+}
+
+void EnviaAConsola(char *cadena){
+	int i;
+	i = 0;
+	while (cadena[i] != 0){
+		UART_Send(cadena[i]);
+		i++;
+	}
+
+}
+
+int CalculaCoeficienteSaturacion(int datos){
+	int coeficiente;
+	coeficiente = (1023*100/2);
+	coeficiente++;
+	return coeficiente;
 }
 
 /** @} doxygen end group definition */

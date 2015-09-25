@@ -64,6 +64,8 @@
 #include "timer.h"
 #include "dac.h"
 #include "adc.h"
+#include "uart.h"
+
 
 
 
@@ -110,6 +112,8 @@ void RIT_IRQHandler(void);
 
 void ServicioIRQ_RIT(void);
 int ModificaDatos(int datos, int coeficiente);
+void EnviaAConsola(char *cadena);
+int CalculaCoeficienteSaturacion(int datos);
 /*==================[external functions declaration]=========================*/
 
 /** @} doxygen end group definition */
